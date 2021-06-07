@@ -414,7 +414,7 @@ class UDACITY:
                 ymax = float(raw_line[4])
                 cls = raw_line[6].split('"')[1]
 
-                if raw_line_length is 8:
+                if raw_line_length == 8:
                     state = raw_line[7].split('"')[1]
                     cls = cls + state
 
@@ -559,7 +559,7 @@ class KITTI:
 
             return False, msg
 
-class YOLO:
+class YOLO_format:
     """
     Handler Class for UDACITY Format
     """
