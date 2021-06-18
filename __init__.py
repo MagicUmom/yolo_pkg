@@ -167,7 +167,7 @@ class YOLO():
             labels.update(matches)
 
         # write label into file`
-        with open(os.path.join(self.CFG_DIR_PATH, "obj.names"), 'w') as f:
+        with open(os.path.join(self.LOCAL_CFG_DIR_PATH, "obj.names"), 'w') as f:
             f.write("\n".join(labels))
 
         print('Read in %d labels: %s' % (len(labels), ", ".join(labels)))
@@ -175,7 +175,7 @@ class YOLO():
     # 查詢 CFG 資料夾內，我們設定了多少的標記檔
     def parse_obj_files(self):
         voc = VOC()
-        yolo_format = YOLO_format(os.path.join(self.CFG_DIR_PATH, "obj.names"))
+        yolo_format = YOLO_format(os.path.join(self.LOCAL_CFG_DIR_PATH, "obj.names"))
 
         flag, data = voc.parse(self.tmp_labels)
         flag, data = yolo_format.generate(data)
@@ -187,7 +187,7 @@ class YOLO():
     # 創建訓練要用到的檔案，其中包含設定yolov4的cfg，例如不同的從10個預測目標變成20個，那cfg檔案就要重新設定
     def create_train_and_test_files(self):
         # fetch label_names
-        with open(os.path.join(self.CFG_DIR_PATH, "obj.names"), 'r') as f:
+        with open(os.path.join(self.LOCAL_CFG_DIR_PATH, "obj.names"), 'r') as f:
             f_content = f.read()
         label_names = f_content.strip().splitlines()
 
@@ -223,5 +223,5 @@ class YOLO():
             f.write("classes=%d\n" % (len(label_names)))
             f.write("train=%s/train.txt\n" % (self.LOCAL_CFG_DIR_PATH))
             f.write("valid=%s/test.txt\n" % (self.LOCAL_CFG_DIR_PATH))
-            f.write("names=%s/obj.names\n" % (self.CFG_DIR_PATH))
+            f.write("names=%s/obj.names\n" % (self.LOCAL_CFG_DIR_PATH))
             f.write("backup=%s\n" % (self.WEIGHTS_DIR_PATH))

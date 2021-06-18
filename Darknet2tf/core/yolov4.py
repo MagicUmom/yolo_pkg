@@ -3,10 +3,10 @@
 
 import numpy as np
 import tensorflow as tf
-import core.utils as utils
-import core.common as common
-import core.backbone as backbone
-from core.config import cfg
+from . import utils as utils
+from . import common as common
+from . import backbone as backbone
+from . import config as cfg
 
 # NUM_CLASS       = len(utils.read_class_names(cfg.YOLO.CLASSES))
 # STRIDES         = np.array(cfg.YOLO.STRIDES)
