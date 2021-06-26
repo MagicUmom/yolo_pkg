@@ -55,7 +55,7 @@ class YOLO():
     def train(self, pretrain_weight = None):
 
         if pretrain_weight == None:
-            gdown.download('https://drive.google.com/uc?id=1JKF-bdIklxOOVy-2Cr5qdvjgGpmGfcbp', os.path.join(self.BASE_PATH, 'yolov4.conv.137'))
+            gdown.download('https://drive.google.com/uc?id=1JKF-bdIklxOOVy-2Cr5qdvjgGpmGfcbp', os.path.join(self.BASE_PATH, 'yolov4.conv.137'), quiet=False)
             pretrain_weight = os.path.join(self.BASE_PATH, 'yolov4.conv.137')
         
         
