@@ -278,8 +278,8 @@ class YOLO():
                     output_tensors = decode(fm, self.FLAGS["input_size"] // 16, NUM_CLASS, STRIDES, ANCHORS, i, XYSCALE, self.FLAGS["framework"])
                 else:
                     output_tensors = decode(fm, self.FLAGS["input_size"] // 32, NUM_CLASS, STRIDES, ANCHORS, i, XYSCALE, self.FLAGS["framework"])
-            bbox_tensors.append(output_tensors[0])
-            prob_tensors.append(output_tensors[1])
+                bbox_tensors.append(output_tensors[0])
+                prob_tensors.append(output_tensors[1])
         pred_bbox = tf.concat(bbox_tensors, axis=1)
         pred_prob = tf.concat(prob_tensors, axis=1)
         if self.FLAGS["framework"] == 'tflite':
@@ -290,9 +290,8 @@ class YOLO():
 
         tf.compat.v1.reset_default_graph() # 確保model是乾淨的狀態
         model = tf.keras.Model(input_layer, pred)
+        utils.load_weights(model, self.FLAGS["weights"], self.FLAGS["model"], self.FLAGS["tiny"])
         model.summary()
-        # utils.load_weights(model, self.FLAGS["weights"], self.FLAGS["model"], self.FLAGS["tiny"])
-        # model.summary()
-        # model.save(self.FLAGS["output"])
+        model.save(self.FLAGS["output"])
 
     # ------- FOR Darknet2TF END ---------#
