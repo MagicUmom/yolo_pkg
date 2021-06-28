@@ -299,19 +299,21 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self):
+    def detect(self, WEIGHTS, image_dir = "./pred_data", output_dir = "./pred_result", CLASSES_FILE = "", iou = 0.45, score = 0.25):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
-        arg.weights     = './weights/yolov4-416'        # path to weights file
+        arg.weights     = WEIGHTS                       # path to weights file
         arg.size        = 416                           # resize images to
         arg.tiny        = False                         # yolo or yolo-tiny
         arg.model       = 'yolov4'                      # yolov3 or yolov4
-        arg.image       = './pred_data'                 # path to input image dir
-        arg.output      = './pred_result'               # path to output image dir
-        arg.iou         = 0.45                          # iou threshold
-        arg.score       = 0.25                          # score threshold
-        arg.classes     = "./data/classes/coco.names"   # classes defined path. eg: coco.names
+        arg.image       = image_dir                     # path to input image dir
+        arg.output      = output_dir                    # path to output image dir
+        arg.iou         = iou                           # iou threshold
+        arg.score       = score                         # score threshold
+        if CLASSES_FILE == '': 
+            CLASSES_FILE = os.path.join(self.BASE_PATH,"Darknet2tf/data/classes/coco.names")
+        arg.classes     = CLASSES_FILE                       # classes defined path. eg: coco.names
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
