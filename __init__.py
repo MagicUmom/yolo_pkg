@@ -19,6 +19,9 @@ import glob
 
 class YOLO():
     def __init__(self):
+
+        FLAGS = flags.FLAGS
+
         self.IMAGES_DIR_PATH = None
         self.LABELS_DIR_PATH = None
         self.WEIGHTS_DIR_PATH = None
