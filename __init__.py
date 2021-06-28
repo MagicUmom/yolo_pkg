@@ -20,7 +20,7 @@ import glob
 class YOLO():
     def __init__(self):
 
-        FLAGS = flags.FLAGS
+        # self.FLAGS = flags.FLAGS
 
         self.IMAGES_DIR_PATH = None
         self.LABELS_DIR_PATH = None
@@ -245,22 +245,22 @@ class YOLO():
         # MODEL_TYPE = 'yolov4'
         # CLASSES_FILE = "./data/classes/coco.names"
 
-        # flags.DEFINE_string('weights', WEIGHTS, 'path to weights file')
-        # flags.DEFINE_string('output', OUTPUT , 'path to output')
-        # flags.DEFINE_boolean('tiny', False, 'is yolo-tiny or not')
-        # flags.DEFINE_integer('input_size', INPUT_SIZE, 'define input size of export model')
-        # flags.DEFINE_float('score_thres', 0.2, 'define score threshold')
-        # flags.DEFINE_string('framework', 'tf', 'define what framework do you want to convert (tf, trt, tflite)')
-        # flags.DEFINE_string('model', MODEL_TYPE, 'yolov3 or yolov4')
-        # flags.DEFINE_string('classes', CLASSES_FILE , 'classes defined path. eg: coco.names')
+        flags.DEFINE_string('weights', WEIGHTS, 'path to weights file')
+        flags.DEFINE_string('output', OUTPUT , 'path to output')
+        flags.DEFINE_boolean('tiny', False, 'is yolo-tiny or not')
+        flags.DEFINE_integer('input_size', INPUT_SIZE, 'define input size of export model')
+        flags.DEFINE_float('score_thres', 0.2, 'define score threshold')
+        flags.DEFINE_string('framework', 'tf', 'define what framework do you want to convert (tf, trt, tflite)')
+        flags.DEFINE_string('model', MODEL_TYPE, 'yolov3 or yolov4')
+        flags.DEFINE_string('classes', CLASSES_FILE , 'classes defined path. eg: coco.names')
 
-        FLAGS.weights =  WEIGHTS            # path to weights file
-        FLAGS.output = OUTPUT               # path to output
-        FLAGS.tiny = False                  # is yolo-tiny or not
-        FLAGS.input_size = INPUT_SIZE       # define input size of export model
-        FLAGS.framework = "tf"              # define what framework do you want to convert (tf, trt, tflite)
-        FLAGS.model = MODEL_TYPE            # yolov3 or yolov4
-        FLAGS.classes = CLASSES_FILE        # classes defined path. eg: coco.names
+        # FLAGS.weights =  WEIGHTS            # path to weights file
+        # FLAGS.output = OUTPUT               # path to output
+        # FLAGS.tiny = False                  # is yolo-tiny or not
+        # FLAGS.input_size = INPUT_SIZE       # define input size of export model
+        # FLAGS.framework = "tf"              # define what framework do you want to convert (tf, trt, tflite)
+        # FLAGS.model = MODEL_TYPE            # yolov3 or yolov4
+        # FLAGS.classes = CLASSES_FILE        # classes defined path. eg: coco.names
 
     def save_tf(self, WEIGHTS, OUTPUT, INPUT_SIZE=416, MODEL_TYPE="yolov4", CLASSES_FILE = ''):
         if CLASSES_FILE == '': 
