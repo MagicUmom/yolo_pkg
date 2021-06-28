@@ -250,7 +250,9 @@ class YOLO():
         flags.DEFINE_string('model', MODEL_TYPE, 'yolov3 or yolov4')
         flags.DEFINE_string('classes', CLASSES_FILE , 'classes defined path. eg: coco.names')
 
-    def save_tf(self, WEIGHTS, OUTPUT, INPUT_SIZE=416, MODEL_TYPE="yolov4", CLASSES_FILE = os.path.join(self.BASE_PATH,"Darknet2tf/data/classes/coco.names")):
+    def save_tf(self, WEIGHTS, OUTPUT, INPUT_SIZE=416, MODEL_TYPE="yolov4", CLASSES_FILE = ''):
+        if CLASSES_FILE == '': 
+            CLASSES_FILE = os.path.join(self.BASE_PATH,"Darknet2tf/data/classes/coco.names")
         self.set_conf(WEIGHTS,OUTPUT,INPUT_SIZE,MODEL_TYPE,CLASSES_FILE)
 
         STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
