@@ -299,7 +299,7 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self, WEIGHTS, image_dir = "./pred_data", output_dir = "./pred_result", CLASSES_FILE = "", iou = 0.45, score = 0.25):
+    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
