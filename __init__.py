@@ -1,7 +1,7 @@
 from yolo_pkg.Train import VOC, YOLO_format
 
 import tensorflow as tf
-from yolo_pkg.Darknet2tf.core.yolov4 import YOLO, decode, filter_boxes
+from yolo_pkg.Darknet2tf.core.yolov4 import YOLO_BASE, decode, filter_boxes
 from yolo_pkg.Darknet2tf.core import utils
 from yolo_pkg.Darknet2tf.core.config import cfg
 
@@ -245,12 +245,12 @@ class YOLO():
 
         self.FLAGS["weights"] =  WEIGHTS            # path to weights file
         self.FLAGS["output"] = OUTPUT               # path to output
-        self.FLAGS["tiny"] = False                  # is yolo-tiny or not
-        self.FLAGS["input_size"] = INPUT_SIZE       # define input size of export model
+        self.FLAGS["tiny"] = bool(False)            # is yolo-tiny or not
+        self.FLAGS["input_size"] = int(INPUT_SIZE)  # define input size of export model
         self.FLAGS["framework"] = "tf"              # define what framework do you want to convert (tf, trt, tflite)
         self.FLAGS["model"] = MODEL_TYPE            # yolov3 or yolov4
         self.FLAGS["classes"] = CLASSES_FILE        # classes defined path. eg: coco.names
-        self.FLAGS["score_thres"] = 0.2             # define score threshold
+        self.FLAGS["score_thres"] = float(0.2)      # define score threshold
 
     def save_tf(self, WEIGHTS, OUTPUT, INPUT_SIZE=416, MODEL_TYPE="yolov4", CLASSES_FILE = ''):
         if CLASSES_FILE == '': 
@@ -260,7 +260,7 @@ class YOLO():
         STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(self.FLAGS)
 
         input_layer = tf.keras.layers.Input([self.FLAGS["input_size"], self.FLAGS["input_size"], 3])
-        feature_maps = YOLO(input_layer, NUM_CLASS, self.FLAGS["model"], self.FLAGS["tiny"])
+        feature_maps = YOLO_BASE(input_layer, NUM_CLASS, self.FLAGS["model"], self.FLAGS["tiny"])
         bbox_tensors = []
         prob_tensors = []
         if self.FLAGS["tiny"]:
