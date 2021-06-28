@@ -381,6 +381,6 @@ class YOLO():
                 # image.show()
                 image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
                 cv2.imwrite( os.path.join(arg.output , img), image)
-
+                print(img)
 
     # ------- FOR YOLO Predict in TF END-----#
