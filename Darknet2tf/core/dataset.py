@@ -6,8 +6,8 @@ import cv2
 import random
 import numpy as np
 import tensorflow as tf
-import core.utils as utils
-from core.config import cfg
+from yolo_pkg.Darknet2tf.core import utils
+from yolo_pkg.Darknet2tf.core.config import cfg
 
 
 class Dataset(object):

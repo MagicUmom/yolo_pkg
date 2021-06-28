@@ -1,20 +1,28 @@
 import tensorflow as tf
 from absl import app, flags, logging
 from absl.flags import FLAGS
-from core.yolov4 import YOLO, decode, filter_boxes
-import core.utils as utils
-from core.config import cfg
+from yolo_pkg.Darknet2tf.core.yolov4 import YOLO, decode, filter_boxes
+from yolo_pkg.Darknet2tf.core import utils
+from yolo_pkg.Darknet2tf.core.config import cfg
 
-flags.DEFINE_string('weights', './data/yolov4.weights', 'path to weights file')
-flags.DEFINE_string('output', './checkpoints/yolov4-416', 'path to output')
-flags.DEFINE_boolean('tiny', False, 'is yolo-tiny or not')
-flags.DEFINE_integer('input_size', 416, 'define input size of export model')
-flags.DEFINE_float('score_thres', 0.2, 'define score threshold')
-flags.DEFINE_string('framework', 'tf', 'define what framework do you want to convert (tf, trt, tflite)')
-flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_string('classes', "./data/classes/coco.names" , 'classes defined path. eg: coco.names')
+def set_conf(WEIGHTS,OUTPUT,INPUT_SIZE,MODEL_TYPE,CLASSES_FILE):
+  # WEIGHTS = './data/yolov4.weights'
+  # OUTPUT = './checkpoints/yolov4-416'
+  # INPUT_SIZE = 416
+  # MODEL_TYPE = 'yolov4'
+  # CLASSES_FILE = "./data/classes/coco.names"
+  flags.DEFINE_string('weights', WEIGHTS, 'path to weights file')
+  flags.DEFINE_string('output', OUTPUT , 'path to output')
+  flags.DEFINE_boolean('tiny', False, 'is yolo-tiny or not')
+  flags.DEFINE_integer('input_size', INPUT_SIZE, 'define input size of export model')
+  flags.DEFINE_float('score_thres', 0.2, 'define score threshold')
+  flags.DEFINE_string('framework', 'tf', 'define what framework do you want to convert (tf, trt, tflite)')
+  flags.DEFINE_string('model', MODEL_TYPE, 'yolov3 or yolov4')
+  flags.DEFINE_string('classes', CLASSES_FILE , 'classes defined path. eg: coco.names')
 
-def save_tf():
+def save_tf(WEIGHTS,OUTPUT,INPUT_SIZE,MODEL_TYPE,CLASSES_FILE):
+  set_conf(WEIGHTS,OUTPUT,INPUT_SIZE,MODEL_TYPE,CLASSES_FILE)
+
   STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
 
   input_layer = tf.keras.layers.Input([FLAGS.input_size, FLAGS.input_size, 3])
