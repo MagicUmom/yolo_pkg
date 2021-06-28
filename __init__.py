@@ -13,6 +13,7 @@ from shutil import copyfile
 import gdown
 import random
 import glob
+from easydict import EasyDict
 
 class YOLO():
     def __init__(self):
@@ -295,3 +296,89 @@ class YOLO():
         model.save(self.FLAGS["output"])
 
     # ------- FOR Darknet2TF END ---------#
+
+    # ------- FOR YOLO Predict in START -----#
+
+    def detect(self):
+
+        arg = EasyDict()
+        arg.framework   = 'tf'                          # (tf, tflite, trt)
+        arg.weights     = './weights/yolov4-416'        # path to weights file
+        arg.size        = 416                           # resize images to
+        arg.tiny        = False                         # yolo or yolo-tiny
+        arg.model       = 'yolov4'                      # yolov3 or yolov4
+        arg.image       = './pred_data'                 # path to input image dir
+        arg.output      = './pred_result'               # path to output image dir
+        arg.iou         = 0.45                          # iou threshold
+        arg.score       = 0.25                          # score threshold
+        arg.classes     = "./data/classes/coco.names"   # classes defined path. eg: coco.names
+
+        from tensorflow.compat.v1 import ConfigProto
+        from tensorflow.compat.v1 import InteractiveSession
+        import cv2
+
+        config = ConfigProto()
+        config.gpu_options.allow_growth = True
+        session = InteractiveSession(config=config)
+        STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(arg)
+        input_size = arg.size
+        image_dir_path = arg.image
+
+        print("loading Model ...")
+        # saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
+        # infer = saved_model_loaded.signatures['serving_default']
+        infer = tf.keras.models.load_model(arg.weights)
+
+        imgs = os.listdir(image_dir_path)
+        # out_list = []
+        if not os.path.isdir(arg.output):
+            os.mkdir(arg.output)
+            
+        for img in imgs:
+            if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' :
+        
+                original_image = cv2.imread(image_dir_path + "/" + img)
+                original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+
+                # image_data = utils.image_preprocess(np.copy(original_image), [input_size, input_size])
+                image_data = cv2.resize(original_image, (input_size, input_size))
+                image_data = image_data / 255.
+                # image_data = image_data[np.newaxis, ...].astype(np.float32)
+
+                images_data = []
+                for i in range(1):
+                    images_data.append(image_data)
+                images_data = np.asarray(images_data).astype(np.float32)
+
+                batch_data = tf.constant(images_data)
+                # pred_bbox = infer(batch_data)
+                pred_bbox = infer.predict(batch_data)
+                # print(type(pred_bbox))
+                # print(pred_bbox.shape)
+                # print(pred_bbox)
+                # for key, value in pred_bbox.items():
+                    # boxes = value[:, :, 0:4]
+                    # pred_conf = value[:, :, 4:]
+
+                boxes = pred_bbox[:,:,0:4]
+                pred_conf = pred_bbox[:,:,4:]
+
+                boxes, scores, classes, valid_detections = tf.image.combined_non_max_suppression(
+                    boxes=tf.reshape(boxes, (tf.shape(boxes)[0], -1, 1, 4)),
+                    scores=tf.reshape(
+                        pred_conf, (tf.shape(pred_conf)[0], -1, tf.shape(pred_conf)[-1])),
+                    max_output_size_per_class=50,
+                    max_total_size=50,
+                    iou_threshold=arg.iou,
+                    score_threshold=arg.score
+                )
+                pred_bbox = [boxes.numpy(), scores.numpy(), classes.numpy(), valid_detections.numpy()]
+                image, exist_classes = utils.draw_bbox(original_image, pred_bbox, arg.classes)
+                # image = utils.draw_bbox(image_data*255, pred_bbox)
+                image = Image.fromarray(image.astype(np.uint8))
+                # image.show()
+                image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
+                cv2.imwrite( os.path.join(arg.output , img), image)
+
+
+    # ------- FOR YOLO Predict in TF END-----#
