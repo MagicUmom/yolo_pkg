@@ -1,12 +1,9 @@
 #! /usr/bin/env python
 # coding=utf-8
-
-import numpy as np
 import tensorflow as tf
-from . import utils as utils
-from . import common as common
-from . import backbone as backbone
-from . import config as cfg
+from yolo_pkg.Darknet2tf.core import backbone
+from yolo_pkg.Darknet2tf.core import common
+from yolo_pkg.Darknet2tf.core import config as cfg
 
 # NUM_CLASS       = len(utils.read_class_names(cfg.YOLO.CLASSES))
 # STRIDES         = np.array(cfg.YOLO.STRIDES)

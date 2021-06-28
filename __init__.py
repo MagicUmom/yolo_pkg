@@ -3,7 +3,6 @@ from yolo_pkg.Train import VOC, YOLO_format
 import tensorflow as tf
 from yolo_pkg.Darknet2tf.core.yolov4 import YOLO_BASE, decode, filter_boxes
 from yolo_pkg.Darknet2tf.core import utils
-from yolo_pkg.Darknet2tf.core.config import cfg
 
 import os
 import shutil
@@ -288,9 +287,12 @@ class YOLO():
         else:
             boxes, pred_conf = filter_boxes(pred_bbox, pred_prob, score_threshold=self.FLAGS["score_thres"], input_shape=tf.constant([self.FLAGS["input_size"], self.FLAGS["input_size"]]))
             pred = tf.concat([boxes, pred_conf], axis=-1)
+
+        tf.compat.v1.reset_default_graph() # 確保model是乾淨的狀態
         model = tf.keras.Model(input_layer, pred)
-        utils.load_weights(model, self.FLAGS["weights"], self.FLAGS["model"], self.FLAGS["tiny"])
         model.summary()
-        model.save(self.FLAGS["output"])
+        # utils.load_weights(model, self.FLAGS["weights"], self.FLAGS["model"], self.FLAGS["tiny"])
+        # model.summary()
+        # model.save(self.FLAGS["output"])
 
     # ------- FOR Darknet2TF END ---------#
