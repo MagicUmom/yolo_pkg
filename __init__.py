@@ -35,7 +35,7 @@ class YOLO():
         self.BASE_PATH = os.path.dirname(os.path.realpath(__file__))
         self.CFG_DIR_PATH = os.path.join( self.BASE_PATH , 'Train/cfg')
         
-        self.platform = 1
+        self.platform = 1 # 1 for TWCC, 2 for COLAB , other for custom darknet dir path
 
     def initial(self):
 
@@ -238,6 +238,9 @@ class YOLO():
             content = content.replace("%NUM_MAX_BATCHES_80%", str(int(num_max_batches*0.8)))
             content = content.replace("%NUM_MAX_BATCHES_90%", str(int(num_max_batches*0.9)))
             content = content.replace("%NUM_CONVOLUTIONAL_FILTERS%", str((len(label_names)+5)*3))
+            
+            if self.platform == 2:
+                content = content.replace("mosaic=0", str("mosaic=1"))
 
             f.write(content)
 
