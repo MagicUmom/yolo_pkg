@@ -35,6 +35,8 @@ class YOLO():
         self.BASE_PATH = os.path.dirname(os.path.realpath(__file__))
         self.CFG_DIR_PATH = os.path.join( self.BASE_PATH , 'Train/cfg')
         
+        self.platform = 1
+
     def initial(self):
 
         # 創建資料夾
@@ -59,15 +61,22 @@ class YOLO():
         os.makedirs(self.WEIGHTS_DIR_PATH, exist_ok=True)
         os.makedirs(self.CFG_DIR_PATH, exist_ok=True)
 
-
     def train(self, pretrain_weight = None):
 
         if pretrain_weight == None:
             gdown.download('https://drive.google.com/uc?id=1JKF-bdIklxOOVy-2Cr5qdvjgGpmGfcbp', os.path.join(self.BASE_PATH, 'yolov4.conv.137'), quiet=False)
             pretrain_weight = os.path.join(self.BASE_PATH, 'yolov4.conv.137')
         
-        
-        os.chdir(os.path.join(self.BASE_PATH, self.darknet_path))
+        if self.platform == 1 :
+            self.darknet_path = os.path.join(self.BASE_PATH, "darknet_TWCC")
+        elif self.platform == 2 :
+            self.darknet_path = os.path.join(self.BASE_PATH, "darknet_colab")
+        else:
+            if self.darknet_path == None:
+                assert("錯誤! 如果未指定 yolo.platform 就要設定自己的 yolo.darknet_path!!")
+
+
+        os.chdir(self.darknet_path)
         cmd = "./darknet detector train {}/obj.data {}/yolov4-custom.cfg {} -dont_show | grep 'avg loss'".format(self.LOCAL_CFG_DIR_PATH, self.LOCAL_CFG_DIR_PATH, pretrain_weight)
         print(cmd)
         return cmd
