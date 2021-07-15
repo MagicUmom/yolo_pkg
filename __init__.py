@@ -19,6 +19,7 @@ class YOLO():
     def __init__(self):
         
         self.FLAGS = dict()
+        self.CODE_FILE_PATH = None
 
         self.IMAGES_DIR_PATH = None
         self.LABELS_DIR_PATH = None
@@ -40,26 +41,46 @@ class YOLO():
     def initial(self):
 
         # 創建資料夾
-        if os.path.exists(self.LOCAL_CFG_DIR_PATH):
-            shutil.rmtree(self.LOCAL_CFG_DIR_PATH)
-        os.makedirs(self.LOCAL_CFG_DIR_PATH, exist_ok=True)
+        if self.LOCAL_CFG_DIR_PATH != None:
+            self.LOCAL_CFG_DIR_PATH = os.path.join(self.CODE_FILE_PATH, self.LOCAL_CFG_DIR_PATH)
+            if os.path.exists(self.LOCAL_CFG_DIR_PATH):
+                shutil.rmtree(self.LOCAL_CFG_DIR_PATH)
+            os.makedirs(self.LOCAL_CFG_DIR_PATH, exist_ok=True)
 
-        if os.path.exists(self.tmp_imgs):
-            shutil.rmtree(self.tmp_imgs)
-        os.makedirs(self.tmp_imgs, exist_ok=True)
+        if self.tmp_imgs != None:
+            self.tmp_imgs = os.path.join(self.CODE_FILE_PATH, self.tmp_imgs)
+            if os.path.exists(self.tmp_imgs):
+                shutil.rmtree(self.tmp_imgs)
+            os.makedirs(self.tmp_imgs, exist_ok=True)
 
-        if os.path.exists(self.tmp_labels):
-            shutil.rmtree(self.tmp_labels)
-        os.makedirs(self.tmp_labels, exist_ok=True)
+        if self.tmp_labels != None:
+            self.tmp_labels = os.path.join(self.CODE_FILE_PATH, self.tmp_labels)
+            if os.path.exists(self.tmp_labels):
+                shutil.rmtree(self.tmp_labels)
+            os.makedirs(self.tmp_labels, exist_ok=True)
         
-        if os.path.exists(self.LOCAL_YOLOS_DIR_PATH):
-            shutil.rmtree(self.LOCAL_YOLOS_DIR_PATH)
-        os.makedirs(self.LOCAL_YOLOS_DIR_PATH, exist_ok=True)
+        if self.LOCAL_YOLOS_DIR_PATH != None:
+            self.LOCAL_YOLOS_DIR_PATH = os.path.join(self.CODE_FILE_PATH, self.LOCAL_YOLOS_DIR_PATH)
+            if os.path.exists(self.LOCAL_YOLOS_DIR_PATH):
+                shutil.rmtree(self.LOCAL_YOLOS_DIR_PATH)
+            os.makedirs(self.LOCAL_YOLOS_DIR_PATH, exist_ok=True)
 
-        os.makedirs(self.IMAGES_DIR_PATH, exist_ok=True)
-        os.makedirs(self.LABELS_DIR_PATH, exist_ok=True)
-        os.makedirs(self.WEIGHTS_DIR_PATH, exist_ok=True)
-        os.makedirs(self.CFG_DIR_PATH, exist_ok=True)
+
+        if self.IMAGES_DIR_PATH != None:
+            self.IMAGES_DIR_PATH = os.path.join(self.CODE_FILE_PATH, self.IMAGES_DIR_PATH)
+            os.makedirs(self.IMAGES_DIR_PATH, exist_ok=True)
+        
+        if self.LABELS_DIR_PATH != None:
+            self.LABELS_DIR_PATH = os.path.join(self.CODE_FILE_PATH, self.LABELS_DIR_PATH)
+            os.makedirs(self.LABELS_DIR_PATH, exist_ok=True)
+
+        if self.WEIGHTS_DIR_PATH != None:
+            self.WEIGHTS_DIR_PATH = os.path.join(self.CODE_FILE_PATH, self.WEIGHTS_DIR_PATH)
+            os.makedirs(self.WEIGHTS_DIR_PATH, exist_ok=True)
+
+        if self.CFG_DIR_PATH != None:
+            self.CFG_DIR_PATH = os.path.join(self.CODE_FILE_PATH, self.CFG_DIR_PATH)
+            os.makedirs(self.CFG_DIR_PATH, exist_ok=True)
 
     def train(self, pretrain_weight = None):
 
