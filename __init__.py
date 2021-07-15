@@ -67,7 +67,7 @@ class YOLO():
             pretrain_weight = os.path.join(self.BASE_PATH, 'yolov4.conv.137')
         
         
-        os.chdir(self.darknet_path)
+        os.chdir(os.path.join(self.BASE_PATH, self.darknet_path))
         cmd = "./darknet detector train {}/obj.data {}/yolov4-custom.cfg {} -dont_show | grep 'avg loss'".format(self.LOCAL_CFG_DIR_PATH, self.LOCAL_CFG_DIR_PATH, pretrain_weight)
         print(cmd)
         return cmd
