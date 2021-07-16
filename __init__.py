@@ -361,7 +361,7 @@ class YOLO():
         print("loading Model ...")
         # saved_model_loaded = tf.saved_model.load(FLAGS.weights, tags=[tag_constants.SERVING])
         # infer = saved_model_loaded.signatures['serving_default']
-        infer = tf.keras.models.load_model(arg.weights)
+        infer = tf.keras.models.load_model(arg.weights, compile=False)
 
         imgs = os.listdir(image_dir_path)
         # out_list = []
