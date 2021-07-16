@@ -287,6 +287,19 @@ class YOLO():
     def save_tf(self, WEIGHTS, OUTPUT, INPUT_SIZE=416, MODEL_TYPE="yolov4", CLASSES_FILE = ''):
         if CLASSES_FILE == '': 
             CLASSES_FILE = os.path.join(self.BASE_PATH,"Darknet2tf/data/classes/coco.names")
+        else: 
+            CLASSES_FILE = os.path.abspath(CLASSES_FILE)
+
+        if WEIGHTS != None:
+            WEIGHTS = os.path.abspath(WEIGHTS)
+        else:
+            assert("You must set WEIGHTS path !")
+
+        if OUTPUT != None:
+            OUTPUT = os.path.abspath(OUTPUT)
+        else:
+            assert("You must set OUTPUT path !")
+        
         self.set_conf(WEIGHTS,OUTPUT,INPUT_SIZE,MODEL_TYPE,CLASSES_FILE)
 
         STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(self.FLAGS)
