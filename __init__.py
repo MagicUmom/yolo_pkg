@@ -1,3 +1,4 @@
+from posixpath import abspath
 from yolo_pkg.Train import VOC, YOLO_format
 
 import tensorflow as tf
@@ -86,6 +87,8 @@ class YOLO():
         if pretrain_weight == None:
             gdown.download('https://drive.google.com/uc?id=1JKF-bdIklxOOVy-2Cr5qdvjgGpmGfcbp', os.path.join(self.BASE_PATH, 'yolov4.conv.137'), quiet=False)
             pretrain_weight = os.path.join(self.BASE_PATH, 'yolov4.conv.137')
+        else:
+            pretrain_weight = os.path.abspath(pretrain_weight)
         
         if self.platform == 1 :
             self.darknet_path = os.path.join(self.BASE_PATH, "darknet_TWCC")
