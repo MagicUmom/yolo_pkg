@@ -200,7 +200,7 @@ class YOLO():
                 content = f.read()
 
             # extract label names
-            matches = re.findall(r'<name>([\w_]+)<\/name>', content, flags=0)
+            matches = re.findall(r'<name>([\w_\-\*]+)<\/name>', content, flags=0)
             labels.update(matches)
 
         # write label into file`
