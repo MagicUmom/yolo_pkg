@@ -347,7 +347,7 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25):
+    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, is_classfile = False, class_result = "class_results" ):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
@@ -361,7 +361,11 @@ class YOLO():
         arg.score       = score                         # score threshold
         if CLASSES_FILE == '': 
             CLASSES_FILE = os.path.join(self.BASE_PATH,"Darknet2tf/data/classes/coco.names")
-        arg.classes     = CLASSES_FILE                       # classes defined path. eg: coco.names
+        arg.classes     = CLASSES_FILE                  # classes defined path. eg: coco.names
+        if is_classfile == True:
+            arg.class_result = class_result
+            if not os.path.isdir(arg.class_result):
+                os.mkdir(arg.class_result)
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
@@ -383,7 +387,7 @@ class YOLO():
         # out_list = []
         if not os.path.isdir(arg.output):
             os.mkdir(arg.output)
-            
+        
         for img in imgs:
             if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' :
         
@@ -423,12 +427,19 @@ class YOLO():
                     score_threshold=arg.score
                 )
                 pred_bbox = [boxes.numpy(), scores.numpy(), classes.numpy(), valid_detections.numpy()]
-                image, exist_classes = utils.draw_bbox(original_image, pred_bbox, arg.classes)
+                image , outputfile = utils.draw_bbox(original_image, pred_bbox, arg.classes)
+
                 # image = utils.draw_bbox(image_data*255, pred_bbox)
                 image = Image.fromarray(image.astype(np.uint8))
                 # image.show()
                 image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
                 cv2.imwrite( os.path.join(arg.output , img), image)
+
+                with open(img.split(".")[0] + ".txt", "w" , encoding='UTF-8') as f :
+                    for line in outputfile:
+                        f.write(line)
+                    f.close()
+
                 print(img)
 
     # ------- FOR YOLO Predict in TF END-----#
