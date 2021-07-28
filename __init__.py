@@ -435,7 +435,7 @@ class YOLO():
                 image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
                 cv2.imwrite( os.path.join(arg.output , img), image)
 
-                with open( os.path.join( arg.output, img.split(".")[0] + ".txt") , "w" , encoding='UTF-8') as f :
+                with open( os.path.join( arg.class_result, img.split(".")[0] + ".txt") , "w" , encoding='UTF-8') as f :
                     for line in outputfile:
                         f.write(" ".join(line))
                         f.write("\n")
