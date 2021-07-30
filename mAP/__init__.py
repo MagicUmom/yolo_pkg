@@ -360,7 +360,7 @@ class mAP:
             Create a list of all the class names present in the ground-truth (gt_classes).
         """
         # get a list with the ground-truth files
-        ground_truth_files_list = glob.glob(GT_PATH + '/*.txt')
+        ground_truth_files_list = glob.glob(self.GT_PATH + '/*.txt')
         if len(ground_truth_files_list) == 0:
             error("Error: No ground-truth files found!")
         ground_truth_files_list.sort()
@@ -374,7 +374,7 @@ class mAP:
             file_id = txt_file.split(".txt", 1)[0]
             file_id = os.path.basename(os.path.normpath(file_id))
             # check if there is a correspondent detection-results file
-            temp_path = os.path.join(DR_PATH, (file_id + ".txt"))
+            temp_path = os.path.join(self.DR_PATH, (file_id + ".txt"))
             if not os.path.exists(temp_path):
                 error_msg = "Error. File not found: {}\n".format(temp_path)
                 error_msg += "(You can avoid this error message by running extra/intersect-gt-and-dr.py)"
@@ -465,7 +465,7 @@ class mAP:
             Load each of the detection-results files into a temporary ".json" file.
         """
         # get a list with the detection-results files
-        dr_files_list = glob.glob(DR_PATH + '/*.txt')
+        dr_files_list = glob.glob(self.DR_PATH + '/*.txt')
         dr_files_list.sort()
 
         for class_index, class_name in enumerate(gt_classes):
@@ -475,7 +475,7 @@ class mAP:
                 # the first time it checks if all the corresponding ground-truth files exist
                 file_id = txt_file.split(".txt",1)[0]
                 file_id = os.path.basename(os.path.normpath(file_id))
-                temp_path = os.path.join(GT_PATH, (file_id + ".txt"))
+                temp_path = os.path.join(self.GT_PATH, (file_id + ".txt"))
                 if class_index == 0:
                     if not os.path.exists(temp_path):
                         error_msg = "Error. File not found: {}\n".format(temp_path)
@@ -528,7 +528,7 @@ class mAP:
                     file_id = detection["file_id"]
                     if self.show_animation:
                         # find ground truth image
-                        ground_truth_img = glob.glob1(IMG_PATH, file_id + ".*")
+                        ground_truth_img = glob.glob1(self.IMG_PATH, file_id + ".*")
                         #tifCounter = len(glob.glob1(myPath,"*.tif"))
                         if len(ground_truth_img) == 0:
                             error("Error. Image not found with id: " + file_id)
@@ -537,7 +537,7 @@ class mAP:
                         else: # found image
                             #print(IMG_PATH + "/" + ground_truth_img[0])
                             # Load image
-                            img = cv2.imread(IMG_PATH + "/" + ground_truth_img[0])
+                            img = cv2.imread(self.IMG_PATH + "/" + ground_truth_img[0])
                             # load image with draws of multiple detections
                             img_cumulative_path = output_files_path + "/images/" + ground_truth_img[0]
                             if os.path.isfile(img_cumulative_path):
@@ -750,7 +750,7 @@ class mAP:
                 img_cumulative_path = output_files_path + "/images/" + img_id + ".jpg"
                 img = cv2.imread(img_cumulative_path)
                 if img is None:
-                    img_path = IMG_PATH + '/' + img_id + ".jpg"
+                    img_path = self.IMG_PATH + '/' + img_id + ".jpg"
                     img = cv2.imread(img_path)
                 # draw false negatives
                 for obj in ground_truth_data:
