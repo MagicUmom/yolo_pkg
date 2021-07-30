@@ -47,7 +47,7 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH):
     sys.exit()
 
   for image in img_list:
-    image_name = image.split(",")[0]
+    image_name = image.split(".")[0]
     tmp_file = None
 
     for fname in os.listdir(GT_PATH):
