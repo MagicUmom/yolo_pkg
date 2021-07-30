@@ -26,6 +26,7 @@ class mAP:
 
     def __init__(self, GT_PATH, DR_PATH, IMG_PATH):
         MINOVERLAP = 0.5 # default value (defined in the PASCAL VOC2012 challenge)
+        self.args = EasyDict()
 
         # parser = argparse.ArgumentParser()
         # parser.add_argument('-na', '--no-animation', help="no animation is shown.", action="store_true")
@@ -39,7 +40,7 @@ class mAP:
 
         # # if there are no classes to ignore then replace None by empty list
         # if args.ignore is None:
-        #     args.ignore = []
+        args.ignore = []
 
         # specific_iou_flagged = False
         # if args.set_class_iou is not None:
@@ -48,7 +49,6 @@ class mAP:
         # make sure that the cwd() is the location of the python script (so that every path makes sense)
         # os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-        self.args = EasyDict()
 
         self.GT_PATH = GT_PATH
         self.DR_PATH = DR_PATH
