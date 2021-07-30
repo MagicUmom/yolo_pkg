@@ -81,4 +81,4 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESUL
         ## add new line to file
         #print(obj_name + " " + str(left) + " " + str(top) + " " + str(right) + " " + str(bottom))
         new_f.write(obj_name + " " + str(left) + " " + str(top) + " " + str(right) + " " + str(bottom) + '\n')
-  print("Conversion completed!")
+  print("--- Conversion completed! ---")
