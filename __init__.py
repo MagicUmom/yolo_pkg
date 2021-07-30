@@ -442,11 +442,11 @@ class YOLO():
                 cv2.imwrite( os.path.join(arg.output , img), image)
 
                 if arg.count_mAP :
-                with open( os.path.join( arg.class_result, img.split(".")[0] + ".txt") , "w" , encoding='UTF-8') as f :
-                    for line in outputfile:
-                        f.write(" ".join(line))
-                        f.write("\n")
-                    f.close()
+                    with open( os.path.join( arg.class_result, img.split(".")[0] + ".txt") , "w" , encoding='UTF-8') as f :
+                        for line in outputfile:
+                            f.write(" ".join(line))
+                            f.write("\n")
+                        f.close()
 
         if arg.count_mAP :
             print("--- 計算mAP ---")
