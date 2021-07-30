@@ -371,7 +371,7 @@ class YOLO():
             arg.count_mAP = count_mAP
             arg.class_result = class_result
             if not os.path.isdir(class_result):
-                os.mkdir(class_result)
+                os.makedirs(class_result)
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
@@ -451,7 +451,7 @@ class YOLO():
 
         if arg.count_mAP :
             print("--- convert yolo to voc format ---")
-            convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, gt_file)
+            # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, gt_file)
             # MAP = mAP(  arg.class_result, arg.class_result, arg.image)
             # MAP.run()
             # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
