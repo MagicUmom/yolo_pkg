@@ -69,7 +69,7 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESUL
     # 3. move old file (YOLO format) to backup
     # os.rename(tmp_file, "backup/" + tmp_file)
     # 4. create new file (VOC format)
-    with open( os.path.join(CLASS_RESULT_DIR, tmp_file) "a") as new_f:
+    with open( os.path.join(CLASS_RESULT_DIR, tmp_file) ,"a") as new_f:
       for line in content:
         ## split a line by spaces.
         ## "c" stands for center and "n" stands for normalized
