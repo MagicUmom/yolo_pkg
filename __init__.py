@@ -350,7 +350,7 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "class_results" , true_label_path = None):
+    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "pred_file" , true_label_path = None, gt_file = "GT_file"):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
@@ -451,9 +451,9 @@ class YOLO():
 
         if arg.count_mAP :
             print("--- convert yolo to voc format ---")
-            convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, arg.class_result)
+            convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, gt_file)
             # MAP = mAP(  arg.class_result, arg.class_result, arg.image)
-            MAP.run()
+            # MAP.run()
             # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
 
 
