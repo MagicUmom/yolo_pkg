@@ -42,7 +42,7 @@ class mAP:
         # if args.ignore is None:
         self.args.ignore = []
 
-        # specific_iou_flagged = False
+        self.specific_iou_flagged = False
         # if args.set_class_iou is not None:
         #     specific_iou_flagged = True
 
@@ -440,7 +440,7 @@ class mAP:
         Check format of the flag --set-class-iou (if used)
             e.g. check if class exists
         """
-        if specific_iou_flagged:
+        if self.specific_iou_flagged:
             n_args = len(self.args.set_class_iou)
             error_msg = \
                 '\n --set-class-iou [class_1] [IoU_1] [class_2] [IoU_2] [...]'
@@ -577,7 +577,7 @@ class mAP:
                         status = "NO MATCH FOUND!" # status is only used in the animation
                     # set minimum overlap
                     min_overlap = MINOVERLAP
-                    if specific_iou_flagged:
+                    if self.specific_iou_flagged:
                         if class_name in specific_iou_classes:
                             index = specific_iou_classes.index(class_name)
                             min_overlap = float(iou_list[index])
