@@ -10,17 +10,17 @@ import math
 import numpy as np
 from easydict import EasyDict
 
-    """
-        0,0 ------> x (width)
-        |
-        |  (Left,Top)
-        |      *_________
-        |      |         |
-                |         |
-        y      |_________|
-    (height)            *
-                    (Right,Bottom)
-    """
+"""
+    0,0 ------> x (width)
+    |
+    |  (Left,Top)
+    |      *_________
+    |      |         |
+            |         |
+    y      |_________|
+(height)            *
+                (Right,Bottom)
+"""
 
 class mAP:
 
