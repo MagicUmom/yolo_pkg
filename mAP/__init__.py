@@ -283,7 +283,7 @@ class mAP:
                 t = plt.text(val, i, tp_str_val, color='forestgreen', va='center', fontweight='bold')
                 plt.text(val, i, fp_str_val, color='crimson', va='center', fontweight='bold')
                 if i == (len(sorted_values)-1): # largest bar
-                    adjust_axes(r, t, fig, axes)
+                    self.adjust_axes(r, t, fig, axes)
         else:
             plt.barh(range(n_classes), sorted_values, color=plot_color)
             """
@@ -299,7 +299,7 @@ class mAP:
                 t = plt.text(val, i, str_val, color=plot_color, va='center', fontweight='bold')
                 # re-set axes to show number inside the figure
                 if i == (len(sorted_values)-1): # largest bar
-                    adjust_axes(r, t, fig, axes)
+                    self.adjust_axes(r, t, fig, axes)
         # set window title
         fig.canvas.set_window_title(window_title)
         # write classes in y axis
@@ -362,7 +362,7 @@ class mAP:
         # get a list with the ground-truth files
         ground_truth_files_list = glob.glob(self.GT_PATH + '/*.txt')
         if len(ground_truth_files_list) == 0:
-            error("Error: No ground-truth files found!")
+            self.error("Error: No ground-truth files found!")
         ground_truth_files_list.sort()
         # dictionary with counter per class
         gt_counter_per_class = {}
@@ -378,8 +378,8 @@ class mAP:
             if not os.path.exists(temp_path):
                 error_msg = "Error. File not found: {}\n".format(temp_path)
                 error_msg += "(You can avoid this error message by running extra/intersect-gt-and-dr.py)"
-                error(error_msg)
-            lines_list = file_lines_to_list(txt_file)
+                self.error(error_msg)
+            lines_list = self.file_lines_to_list(txt_file)
             # create ground-truth dictionary
             bounding_boxes = []
             is_difficult = False
@@ -397,7 +397,7 @@ class mAP:
                     error_msg += " Received: " + line
                     error_msg += "\n\nIf you have a <class_name> with spaces between words you should remove them\n"
                     error_msg += "by running the script \"remove_space.py\" or \"rename_class.py\" in the \"extra/\" folder."
-                    error(error_msg)
+                    self.error(error_msg)
                 # check if class is in the ignore list, if yes skip
                 if class_name in self.args.ignore:
                     continue
@@ -445,20 +445,20 @@ class mAP:
             error_msg = \
                 '\n --set-class-iou [class_1] [IoU_1] [class_2] [IoU_2] [...]'
             if n_args % 2 != 0:
-                error('Error, missing arguments. Flag usage:' + error_msg)
+                self.error('Error, missing arguments. Flag usage:' + error_msg)
             # [class_1] [IoU_1] [class_2] [IoU_2]
             # specific_iou_classes = ['class_1', 'class_2']
             specific_iou_classes = self.args.set_class_iou[::2] # even
             # iou_list = ['IoU_1', 'IoU_2']
             iou_list = self.args.set_class_iou[1::2] # odd
             if len(specific_iou_classes) != len(iou_list):
-                error('Error, missing arguments. Flag usage:' + error_msg)
+                self.error('Error, missing arguments. Flag usage:' + error_msg)
             for tmp_class in specific_iou_classes:
                 if tmp_class not in gt_classes:
-                            error('Error, unknown class \"' + tmp_class + '\". Flag usage:' + error_msg)
+                            self.error('Error, unknown class \"' + tmp_class + '\". Flag usage:' + error_msg)
             for num in iou_list:
-                if not is_float_between_0_and_1(num):
-                    error('Error, IoU must be between 0.0 and 1.0. Flag usage:' + error_msg)
+                if not self.is_float_between_0_and_1(num):
+                    self.error('Error, IoU must be between 0.0 and 1.0. Flag usage:' + error_msg)
 
         """
         detection-results
@@ -480,8 +480,8 @@ class mAP:
                     if not os.path.exists(temp_path):
                         error_msg = "Error. File not found: {}\n".format(temp_path)
                         error_msg += "(You can avoid this error message by running extra/intersect-gt-and-dr.py)"
-                        error(error_msg)
-                lines = file_lines_to_list(txt_file)
+                        self.error(error_msg)
+                lines = self.file_lines_to_list(txt_file)
                 for line in lines:
                     try:
                         tmp_class_name, confidence, left, top, right, bottom = line.split()
@@ -489,7 +489,7 @@ class mAP:
                         error_msg = "Error: File " + txt_file + " in the wrong format.\n"
                         error_msg += " Expected: <class_name> <confidence> <left> <top> <right> <bottom>\n"
                         error_msg += " Received: " + line
-                        error(error_msg)
+                        self.error(error_msg)
                     if tmp_class_name == class_name:
                         #print("match")
                         bbox = left + " " + top + " " + right + " " +bottom
@@ -531,9 +531,9 @@ class mAP:
                         ground_truth_img = glob.glob1(self.IMG_PATH, file_id + ".*")
                         #tifCounter = len(glob.glob1(myPath,"*.tif"))
                         if len(ground_truth_img) == 0:
-                            error("Error. Image not found with id: " + file_id)
+                            self.error("Error. Image not found with id: " + file_id)
                         elif len(ground_truth_img) > 1:
-                            error("Error. Multiple image with id: " + file_id)
+                            self.error("Error. Multiple image with id: " + file_id)
                         else: # found image
                             #print(IMG_PATH + "/" + ground_truth_img[0])
                             # Load image
@@ -618,9 +618,9 @@ class mAP:
                         margin = 10
                         v_pos = int(height - margin - (bottom_border / 2.0))
                         text = "Image: " + ground_truth_img[0] + " "
-                        img, line_width = draw_text_in_image(img, text, (margin, v_pos), white, 0)
+                        img, line_width = self.draw_text_in_image(img, text, (margin, v_pos), white, 0)
                         text = "Class [" + str(class_index) + "/" + str(n_classes) + "]: " + class_name + " "
-                        img, line_width = draw_text_in_image(img, text, (margin + line_width, v_pos), light_blue, line_width)
+                        img, line_width = self.draw_text_in_image(img, text, (margin + line_width, v_pos), light_blue, line_width)
                         if ovmax != -1:
                             color = light_red
                             if status == "INSUFFICIENT OVERLAP":
@@ -628,17 +628,17 @@ class mAP:
                             else:
                                 text = "IoU: {0:.2f}% ".format(ovmax*100) + ">= {0:.2f}% ".format(min_overlap*100)
                                 color = green
-                            img, _ = draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
+                            img, _ = self.draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
                         # 2nd line
                         v_pos += int(bottom_border / 2.0)
                         rank_pos = str(idx+1) # rank position (idx starts at 0)
                         text = "Detection #rank: " + rank_pos + " confidence: {0:.2f}% ".format(float(detection["confidence"])*100)
-                        img, line_width = draw_text_in_image(img, text, (margin, v_pos), white, 0)
+                        img, line_width = self.draw_text_in_image(img, text, (margin, v_pos), white, 0)
                         color = light_red
                         if status == "MATCH!":
                             color = green
                         text = "Result: " + status + " "
-                        img, line_width = draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
+                        img, line_width = self.draw_text_in_image(img, text, (margin + line_width, v_pos), color, line_width)
 
                         font = cv2.FONT_HERSHEY_SIMPLEX
                         if ovmax > 0: # if there is intersections between the bounding-boxes
@@ -679,7 +679,7 @@ class mAP:
                     prec[idx] = float(tp[idx]) / (fp[idx] + tp[idx])
                 #print(prec)
 
-                ap, mrec, mprec = voc_ap(rec[:], prec[:])
+                ap, mrec, mprec = self.voc_ap(rec[:], prec[:])
                 sum_AP += ap
                 text = "{0:.2f}%".format(ap*100) + " = " + class_name + " AP " #class_name + " AP = {0:.2f}%".format(ap*100)
                 """
@@ -693,7 +693,7 @@ class mAP:
                 ap_dictionary[class_name] = ap
 
                 n_images = counter_images_per_class[class_name]
-                lamr, mr, fppi = log_average_miss_rate(np.array(prec), np.array(rec), n_images)
+                lamr, mr, fppi = self.log_average_miss_rate(np.array(prec), np.array(rec), n_images)
                 lamr_dictionary[class_name] = lamr
 
                 """
@@ -769,7 +769,7 @@ class mAP:
         det_counter_per_class = {}
         for txt_file in dr_files_list:
             # get lines to list
-            lines_list = file_lines_to_list(txt_file)
+            lines_list = self.file_lines_to_list(txt_file)
             for line in lines_list:
                 class_name = line.split()[0]
                 # check if class is in the ignore list, if yes skip
@@ -796,7 +796,7 @@ class mAP:
             output_path = output_files_path + "/ground-truth-info.png"
             to_show = False
             plot_color = 'forestgreen'
-            draw_plot_func(
+            self.draw_plot_func(
                 gt_counter_per_class,
                 n_classes,
                 window_title,
@@ -841,7 +841,7 @@ class mAP:
             to_show = False
             plot_color = 'forestgreen'
             true_p_bar = count_true_positives
-            draw_plot_func(
+            self.draw_plot_func(
                 det_counter_per_class,
                 len(det_counter_per_class),
                 window_title,
@@ -875,7 +875,7 @@ class mAP:
             output_path = output_files_path + "/lamr.png"
             to_show = False
             plot_color = 'royalblue'
-            draw_plot_func(
+            self.draw_plot_func(
                 lamr_dictionary,
                 n_classes,
                 window_title,
@@ -897,7 +897,7 @@ class mAP:
             output_path = output_files_path + "/mAP.png"
             to_show = True
             plot_color = 'royalblue'
-            draw_plot_func(
+            self.draw_plot_func(
                 ap_dictionary,
                 n_classes,
                 window_title,
