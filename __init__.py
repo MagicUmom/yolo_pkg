@@ -453,6 +453,7 @@ class YOLO():
             print("--- convert yolo to voc format ---")
             convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, arg.class_result)
             MAP = mAP(  arg.class_result, arg.class_result, arg.image)
+            MAP.run()
             # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
 
 
