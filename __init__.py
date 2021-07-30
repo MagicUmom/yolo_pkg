@@ -350,7 +350,7 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "pred_file" , true_label_path = None, gt_file = "GT_file"):
+    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "map_file/pred_file" , true_label_path = None, gt_file = "map_file/GT_file"):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
