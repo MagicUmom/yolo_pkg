@@ -41,31 +41,28 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH):
     os.makedirs("backup")
 
   # create VOC format files
-  txt_list = glob.glob(os.path.join(GT_PATH,'*.txt'))
-  if len(txt_list) == 0:
-    print("Error: no .txt files found in ground-truth")
+  img_list = [ img for imgs in os.listdir(IMG_PATH) if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' ]
+  if len(img_list) == 0:
+    print("Error: image not found")
     sys.exit()
-  for tmp_file in txt_list:
-    #print(tmp_file)
-    # 1. check that there is an image with that name
-    ## get name before ".txt"
-    image_name = tmp_file.split(".txt",1)[0]
-    #print(image_name)
-    ## check if image exists
-    for fname in os.listdir(IMG_PATH):
+
+  for image in img_list:
+    image_name = image.split(",")[0]
+    tmp_file = None
+
+    for fname in os.listdir(GT_PATH):
       if fname.startswith(image_name):
-        ## image found
-        #print(fname)
-        img = cv2.imread( os.path.join(IMG_PATH, fname))
+        img =  cv2.imread( os.path.join(IMG_PATH, fname))
         ## get image width and height
         img_height, img_width = img.shape[:2]
+        tmp_file = image_name + ".txt"
         break
     else:
       ## image not found
-      print("Error: image not found, corresponding to " + tmp_file)
+      print("Error: Ground True File NOT found, corresponding to " + image_name)
       sys.exit()
     # 2. open txt file lines to a list
-    with open(tmp_file) as f:
+    with open(os.path.join(GT_PATH, tmp_file)) as f:
       content = f.readlines()
     ## remove whitespace characters like `\n` at the end of each line
     content = [x.strip() for x in content]
