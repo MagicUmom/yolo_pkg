@@ -27,8 +27,8 @@ import cv2
 class mAP:
 
     def __init__(self, GT_PATH, DR_PATH, IMG_PATH):
-        MINOVERLAP = 0.5 # default value (defined in the PASCAL VOC2012 challenge)
         self.args = EasyDict()
+        self.args.MINOVERLAP = 0.5 # default value (defined in the PASCAL VOC2012 challenge)
 
         # parser = argparse.ArgumentParser()
         # parser.add_argument('-na', '--no-animation', help="no animation is shown.", action="store_true")
@@ -578,7 +578,7 @@ class mAP:
                     if self.show_animation:
                         status = "NO MATCH FOUND!" # status is only used in the animation
                     # set minimum overlap
-                    min_overlap = MINOVERLAP
+                    min_overlap = self.args.MINOVERLAP
                     if self.specific_iou_flagged:
                         if class_name in specific_iou_classes:
                             index = specific_iou_classes.index(class_name)
