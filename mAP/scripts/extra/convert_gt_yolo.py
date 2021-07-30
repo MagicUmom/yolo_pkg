@@ -41,7 +41,7 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH):
     os.makedirs("backup")
 
   # create VOC format files
-  img_list = [ img for imgs in os.listdir(IMG_PATH) if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' ]
+  img_list = [ img for img in os.listdir(IMG_PATH) if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' ]
   if len(img_list) == 0:
     print("Error: image not found")
     sys.exit()
