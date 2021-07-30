@@ -4,7 +4,7 @@ import glob
 import cv2
 
 
-def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH):
+def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESULT_DIR):
   def count_gt(x_c_n, y_c_n, width_n, height_n, img_width, img_height):
     ## remove normalization given the size of the image
     x_c = float(x_c_n) * img_width
@@ -67,9 +67,9 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH):
     ## remove whitespace characters like `\n` at the end of each line
     content = [x.strip() for x in content]
     # 3. move old file (YOLO format) to backup
-    os.rename(tmp_file, "backup/" + tmp_file)
+    # os.rename(tmp_file, "backup/" + tmp_file)
     # 4. create new file (VOC format)
-    with open(tmp_file, "a") as new_f:
+    with open( os.path.join(CLASS_RESULT_DIR, tmp_file) "a") as new_f:
       for line in content:
         ## split a line by spaces.
         ## "c" stands for center and "n" stands for normalized

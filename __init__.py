@@ -451,6 +451,6 @@ class YOLO():
 
         if arg.count_mAP :
             print("--- 計算mAP ---")
-            convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image)
+            convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, arg.class_result)
             # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
     # ------- FOR YOLO Predict in TF END-----#
