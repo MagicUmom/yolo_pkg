@@ -55,7 +55,7 @@ class mAP:
         # if there are no images then no animation can be shown
         self.IMG_PATH = IMG_PATH
         self.args.no_animation = False
-        
+
         if os.path.exists(self.IMG_PATH): 
             for dirpath, dirnames, files in os.walk(self.IMG_PATH):
                 if not files:
@@ -76,13 +76,11 @@ class mAP:
 
         # try to import Matplotlib if the user didn't choose the option --no-plot
         self.draw_plot = False
-        if not self.args.no_plot:
-            try:
-                import matplotlib.pyplot as plt
-                self.draw_plot = True
-            except ImportError:
-                print("\"matplotlib\" not found, please install it to get the resulting plots.")
-                self.args.no_plot = True
+        try:
+            import matplotlib.pyplot as plt
+            self.draw_plot = True
+        except ImportError:
+            print("\"matplotlib\" not found, please install it to get the resulting plots.")
 
 
     def log_average_miss_rate(self, prec, rec, num_images):
