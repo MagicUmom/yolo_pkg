@@ -456,7 +456,6 @@ class YOLO():
             convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, gt_file)
             MAP = mAP(  gt_file, arg.class_result, arg.image)
             MAP.run()
-            # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
 
 
     # ------- FOR YOLO Predict in TF END-----#
