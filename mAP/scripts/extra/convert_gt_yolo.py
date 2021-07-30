@@ -52,7 +52,7 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH):
 
     for fname in os.listdir(GT_PATH):
       if fname.startswith(image_name):
-        img =  cv2.imread( os.path.join(IMG_PATH, fname))
+        img =  cv2.imread( os.path.join(IMG_PATH, image))
         ## get image width and height
         img_height, img_width = img.shape[:2]
         tmp_file = image_name + ".txt"
