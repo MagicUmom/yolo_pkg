@@ -40,7 +40,7 @@ class mAP:
 
         # # if there are no classes to ignore then replace None by empty list
         # if args.ignore is None:
-        args.ignore = []
+        self.args.ignore = []
 
         # specific_iou_flagged = False
         # if args.set_class_iou is not None:
