@@ -163,7 +163,7 @@ def draw_bbox(image, bboxes, classes_path, show_label=True):
             cv2.putText(image, bbox_mess, (c1[0], c1[1] - 2), cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale, (0, 0, 0), bbox_thick // 2, lineType=cv2.LINE_AA)
 
-        print(classes[class_ind], str(score), str(c1[0]), str(c1[1]), str(c2[0]), str(c2[1]))
+        # print(classes[class_ind], str(score), str(c1[0]), str(c1[1]), str(c2[0]), str(c2[1]))
         classes_list.append([classes[class_ind], str(score), str(c1[0]), str(c1[1]), str(c2[0]), str(c2[1])])
 
     return image, classes_list

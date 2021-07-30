@@ -345,7 +345,7 @@ class mAP:
         TEMP_FILES_PATH = ".temp_files"
         if not os.path.exists(TEMP_FILES_PATH): # if it doesn't exist already
             os.makedirs(TEMP_FILES_PATH)
-        output_files_path = "output"
+        output_files_path = "mAP_output"
         if os.path.exists(output_files_path): # if it exist already
             # reset the output directory
             shutil.rmtree(output_files_path)
