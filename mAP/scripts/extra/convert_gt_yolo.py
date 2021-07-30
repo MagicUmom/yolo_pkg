@@ -71,7 +71,7 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESUL
     # 4. create new file (VOC format)
     print(content)
     print(os.path.join(CLASS_RESULT_DIR, tmp_file))
-    with open( os.path.join(CLASS_RESULT_DIR, tmp_file) ,"a") as new_f:
+    with open( os.path.join(CLASS_RESULT_DIR, tmp_file) ,"w") as new_f:
       for line in content:
         ## split a line by spaces.
         ## "c" stands for center and "n" stands for normalized
