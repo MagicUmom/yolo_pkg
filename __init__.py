@@ -452,8 +452,8 @@ class YOLO():
         if arg.count_mAP :
             print("--- convert yolo to voc format ---")
             convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image, gt_file)
-            # MAP = mAP(  arg.class_result, arg.class_result, arg.image)
-            # MAP.run()
+            MAP = mAP(  gt_file, arg.class_result, arg.image)
+            MAP.run()
             # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
 
 
