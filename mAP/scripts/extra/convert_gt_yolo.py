@@ -37,8 +37,8 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESUL
 
   # old files (YOLO format) will be moved to a new folder (backup/)
   ## create the backup dir if it doesn't exist already
-  if not os.path.exists("backup"):
-    os.makedirs("backup")
+  # if not os.path.exists("backup"):
+  #   os.makedirs("backup")
 
   # create VOC format files
   img_list = [ img for img in os.listdir(IMG_PATH) if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' ]
