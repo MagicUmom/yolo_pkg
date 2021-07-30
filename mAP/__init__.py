@@ -9,6 +9,7 @@ import math
 
 import numpy as np
 from easydict import EasyDict
+import matplotlib.pyplot as plt
 
 """
     0,0 ------> x (width)
