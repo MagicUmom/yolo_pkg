@@ -369,8 +369,9 @@ class YOLO():
             assert true_label_path != None , "要計算mAP需要給Ground True label 檔案的路徑"
             arg.true_label_path = true_label_path
             arg.count_mAP = count_mAP
-            if not os.path.isdir(arg.class_result):
-                os.mkdir(arg.class_result)
+            arg.class_result = class_result
+            if not os.path.isdir(class_result):
+                os.mkdir(class_result)
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
