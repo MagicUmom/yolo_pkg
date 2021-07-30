@@ -372,6 +372,8 @@ class YOLO():
             arg.class_result = class_result
             if not os.path.isdir(class_result):
                 os.makedirs(class_result)
+            if not os.path.isdir(gt_file):
+                os.makedirs(gt_file)
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
