@@ -5,6 +5,9 @@ import tensorflow as tf
 from yolo_pkg.Darknet2tf.core.yolov4 import YOLO_BASE, decode, filter_boxes
 from yolo_pkg.Darknet2tf.core import utils
 
+from yolo_pkg.mAP import mAP
+from yolo_pkg.mAP.scripts.extra.convert_gt_yolo import convert_yolo_coordinates_to_voc
+
 import os
 import shutil
 import re
@@ -347,7 +350,7 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, is_classfile = False, class_result = "class_results" ):
+    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "class_results" , true_label_path = None):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
@@ -362,8 +365,10 @@ class YOLO():
         if CLASSES_FILE == '': 
             CLASSES_FILE = os.path.join(self.BASE_PATH,"Darknet2tf/data/classes/coco.names")
         arg.classes     = CLASSES_FILE                  # classes defined path. eg: coco.names
-        if is_classfile == True:
-            arg.class_result = class_result
+        if count_mAP == True:
+            assert true_label_path != None , "要計算mAP需要給Ground True label 檔案的路徑"
+            arg.true_label_path = true_label_path
+            arg.count_mAP = count_mAP
             if not os.path.isdir(arg.class_result):
                 os.mkdir(arg.class_result)
 
@@ -390,6 +395,7 @@ class YOLO():
         
         for img in imgs:
             if img.split(".")[-1] == 'jpg' or img.split(".")[-1] == 'png' :
+                print(img)
         
                 original_image = cv2.imread(image_dir_path + "/" + img)
                 original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
@@ -435,12 +441,15 @@ class YOLO():
                 image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
                 cv2.imwrite( os.path.join(arg.output , img), image)
 
+                if arg.count_mAP :
                 with open( os.path.join( arg.class_result, img.split(".")[0] + ".txt") , "w" , encoding='UTF-8') as f :
                     for line in outputfile:
                         f.write(" ".join(line))
                         f.write("\n")
                     f.close()
 
-                print(img)
-
+        if arg.count_mAP :
+            print("--- 計算mAP ---")
+            convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.image)
+            # convert_yolo_coordinates_to_voc(arg.classes, arg.true_label_path, arg.class_result, arg.image)
     # ------- FOR YOLO Predict in TF END-----#
