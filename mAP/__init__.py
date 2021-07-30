@@ -54,7 +54,8 @@ class mAP:
         self.DR_PATH = DR_PATH
         # if there are no images then no animation can be shown
         self.IMG_PATH = IMG_PATH
-
+        self.args.no_animation = False
+        
         if os.path.exists(self.IMG_PATH): 
             for dirpath, dirnames, files in os.walk(self.IMG_PATH):
                 if not files:
