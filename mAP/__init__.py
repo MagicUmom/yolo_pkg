@@ -67,7 +67,7 @@ class mAP:
             self.args.no_animation = True
 
         # try to import OpenCV if the user didn't choose the option --no-animation
-        self.show_animation = False
+        self.show_animation = True
         if not self.args.no_animation:
             try:
                 import cv2
