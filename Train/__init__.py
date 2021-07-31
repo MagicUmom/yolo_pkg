@@ -245,7 +245,8 @@ class VOC:
 
                 objects = root.findall("object")
                 if len(objects) == 0:
-                    return False, "number object zero"
+                    # return False, "number object zero"
+                    continue
 
                 obj = {
                     "num_obj": len(objects)
