@@ -77,6 +77,7 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESUL
         ## "c" stands for center and "n" stands for normalized
         obj_id, x_c_n, y_c_n, width_n, height_n = line.split()
         obj_name = obj_list[int(obj_id)]
+        # print(obj_name, obj_id)
         left, top, right, bottom = count_gt(x_c_n, y_c_n, width_n, height_n, img_width, img_height)
         ## add new line to file
         #print(obj_name + " " + str(left) + " " + str(top) + " " + str(right) + " " + str(bottom))
