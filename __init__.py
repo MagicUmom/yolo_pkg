@@ -374,6 +374,8 @@ class YOLO():
                 os.makedirs(class_result)
             if not os.path.isdir(gt_file):
                 os.makedirs(gt_file)
+        else:
+            arg.count_mAP = False
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
