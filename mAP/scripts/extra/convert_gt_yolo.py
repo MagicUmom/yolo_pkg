@@ -57,10 +57,10 @@ def convert_yolo_coordinates_to_voc(CLASSES_FILE, GT_PATH, IMG_PATH, CLASS_RESUL
         img_height, img_width = img.shape[:2]
         tmp_file = image_name + ".txt"
         break
-    else:
-      ## image not found
-      print("Error: Ground True File NOT found, corresponding to " + image_name)
-      sys.exit()
+      else:
+        ## image not found
+        print("Error: Ground True File NOT found, corresponding to " + image_name)
+        sys.exit()
     # 2. open txt file lines to a list
     with open(os.path.join(GT_PATH, tmp_file)) as f:
       content = f.readlines()
