@@ -19,6 +19,7 @@ import random
 import glob
 from easydict import EasyDict
 import xml.etree.cElementTree as ET
+from xml.dom import minidom
 
 class YOLO():
     def __init__(self):
