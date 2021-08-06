@@ -18,6 +18,7 @@ import gdown
 import random
 import glob
 from easydict import EasyDict
+import xml.etree.cElementTree as ET
 
 class YOLO():
     def __init__(self):
@@ -379,7 +380,6 @@ class YOLO():
         arg.VOC_path = VOC_path
 
         if VOC_output:
-            import xml.etree.cElementTree as ET
             if not os.path.isdir(arg.VOC_path):
                 os.makedirs(arg.VOC_path)
 
