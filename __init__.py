@@ -350,7 +350,7 @@ class YOLO():
 
     # ------- FOR YOLO Predict in START -----#
 
-    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "map_file/pred_file" , true_label_path = None, gt_file = "map_file/GT_file"):
+    def detect(self, WEIGHTS, image_dir = "yolo_pkg/example_imgs", output_dir = "yolo_pkg/results", CLASSES_FILE = "", iou = 0.45, score = 0.25, count_mAP = False, class_result = "map_file/pred_file" , true_label_path = None, gt_file = "map_file/GT_file", VOC_output = False, VOC_path = "VOC_result"):
 
         arg = EasyDict()
         arg.framework   = 'tf'                          # (tf, tflite, trt)
@@ -374,6 +374,15 @@ class YOLO():
                 os.makedirs(class_result)
             if not os.path.isdir(gt_file):
                 os.makedirs(gt_file)
+        
+        arg.VOC_output = VOC_output
+        arg.VOC_path = VOC_path
+
+        if VOC_output:
+            import xml.etree.cElementTree as ET
+            if not os.path.isdir(arg.VOC_path):
+                os.makedirs(arg.VOC_path)
+
 
         from tensorflow.compat.v1 import ConfigProto
         from tensorflow.compat.v1 import InteractiveSession
@@ -444,6 +453,11 @@ class YOLO():
                 image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
                 cv2.imwrite( os.path.join(arg.output , img), image)
 
+                if arg.VOC_output:
+                    height , width , depth = image.shape
+                    self.create_VOC_file(arg.VOC_path, img.split(".")[0], width, height, depth, outputfile)
+                                            
+
                 if arg.count_mAP :
                     with open( os.path.join( arg.class_result, img.split(".")[0] + ".txt") , "w" , encoding='UTF-8') as f :
                         for line in outputfile:
@@ -460,3 +474,38 @@ class YOLO():
 
 
     # ------- FOR YOLO Predict in TF END-----#
+    def formatter(self, elem):
+        """Return a pretty-printed XML string for the Element.
+        """
+        rough_string = ET.tostring(elem, 'utf-8')
+        reparsed = minidom.parseString(rough_string)
+        return reparsed.toprettyxml(indent="    ")
+
+    def create_root(self, filename, width, height, depth):
+        root = ET.Element("annotation")
+        ET.SubElement(root, "filename").text = "{}".format(filename)
+        size = ET.SubElement(root, "size")
+        ET.SubElement(size, "width").text = str(width)
+        ET.SubElement(size, "height").text = str(height)
+        ET.SubElement(size, "depth").text = str(depth)
+        return root
+
+
+    def create_object_annotation(self, root, voc_labels):
+        for voc_label in voc_labels:
+            obj = ET.SubElement(root, "object")
+            ET.SubElement(obj, "name").text = voc_label[0]
+            bbox = ET.SubElement(obj, "bndbox")
+            ET.SubElement(bbox, "xmin").text = str(voc_label[2])
+            ET.SubElement(bbox, "ymin").text = str(voc_label[3])
+            ET.SubElement(bbox, "xmax").text = str(voc_label[4])
+            ET.SubElement(bbox, "ymax").text = str(voc_label[5])
+        return root
+
+
+    def create_VOC_file(self, VOC_path, filename, width, height, depth, voc_labels):
+        root = self.create_root(filename, width, height, depth)
+        root = self.create_object_annotation(root, voc_labels)
+        with open("{}/{}.xml".format(VOC_path, filename), "w") as f:
+            f.write(self.formatter(root))
+            f.close()
