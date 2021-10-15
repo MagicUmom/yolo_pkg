@@ -85,18 +85,15 @@ class YOLO():
             self.CFG_DIR_PATH = os.path.abspath(self.CFG_DIR_PATH)
             os.makedirs(self.CFG_DIR_PATH, exist_ok=True)
 
-    def train(self, pretrain_weight = None):
+    def train(self, pretrain_weight = True):
 
-        if pretrain_weight == None:
+        if pretrain_weight == True:
             gdown.download('https://drive.google.com/uc?id=1JKF-bdIklxOOVy-2Cr5qdvjgGpmGfcbp', os.path.join(self.BASE_PATH, 'yolov4.conv.137'), quiet=False)
             pretrain_weight = os.path.join(self.BASE_PATH, 'yolov4.conv.137')
+        elif pretrain_weight == None:
+            pass
         else:
             pretrain_weight = os.path.abspath(pretrain_weight)
-        
-        else:
-            if self.darknet_path == None:
-                assert("錯誤! 如果未指定 yolo.platform 就要設定自己的 yolo.darknet_path!!")
-
 
         os.chdir(self.darknet_path)
         cmd = "./darknet detector train {}/obj.data {}/yolov4-custom.cfg {} -dont_show | grep 'avg loss'".format(self.LOCAL_CFG_DIR_PATH, self.LOCAL_CFG_DIR_PATH, pretrain_weight)
