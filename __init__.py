@@ -90,16 +90,17 @@ class YOLO():
         if pretrain_weight == True:
             gdown.download('https://drive.google.com/uc?id=1JKF-bdIklxOOVy-2Cr5qdvjgGpmGfcbp', os.path.join(self.BASE_PATH, 'yolov4.conv.137'), quiet=False)
             pretrain_weight = os.path.join(self.BASE_PATH, 'yolov4.conv.137')
+
         elif pretrain_weight == None:
-            pass
+            pretrain_weight = ''
         else:
             pretrain_weight = os.path.abspath(pretrain_weight)
+        
 
         os.chdir(self.darknet_path)
         cmd = "./darknet detector train {}/obj.data {}/yolov4-custom.cfg {} -dont_show | grep 'avg loss'".format(self.LOCAL_CFG_DIR_PATH, self.LOCAL_CFG_DIR_PATH, pretrain_weight)
         print(cmd)
         return cmd
-#         os.system(cmd)
             
     def mkcfg(self):
         self.matching()
@@ -194,12 +195,15 @@ class YOLO():
     # 原本資料標注的檔案有 POSCAL VOC 及 YOLO兩種格式，我們將原本使用 VOC 格式標記的內容轉換成 YOLO格式
     def Convert_VOC2YOLO_format(self):
         labels = set()
-        for path in glob.glob(os.path.join(self.tmp_labels, "*.xml")):
+        paths = glob.glob(os.path.join(self.tmp_labels, "*.xml"))
+        paths.sort()
+        for path in paths:
             with open(path, 'r') as f:
                 content = f.read()
 
             # extract label names
             matches = re.findall(r'<name>([\w_\-\!\*]+)<\/name>', content, flags=0)
+            matches.sort()
             labels.update(matches)
 
         # write label into file`
