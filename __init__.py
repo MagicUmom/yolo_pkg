@@ -33,7 +33,7 @@ class YOLO():
         self.LOCAL_YOLOS_DIR_PATH = None
         self.LOCAL_CFG_DIR_PATH = None
         
-        self.darknet_path = None
+        
         
         self.tmp_imgs = './tmp_images/'
         self.tmp_labels = './tmp_labels/'
@@ -41,6 +41,8 @@ class YOLO():
         self.BASE_PATH = os.path.dirname(os.path.realpath(__file__))
         self.CFG_DIR_PATH = os.path.join( self.BASE_PATH , 'Train/cfg')
         
+        self.darknet_path = os.path.join( self.BASE_PATH, "./darknet_TWCC" )
+
     def initial(self):
 
         # 創建資料夾
