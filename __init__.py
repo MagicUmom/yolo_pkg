@@ -41,7 +41,7 @@ class YOLO():
         self.BASE_PATH = os.path.dirname(os.path.realpath(__file__))
         self.CFG_DIR_PATH = os.path.join( self.BASE_PATH , 'Train/cfg')
         
-        self.darknet_path = os.path.join( self.BASE_PATH, "./darknet_TWCC" )
+        self.darknet_path = os.path.join( self.BASE_PATH, "darknet_TWCC" )
 
     def initial(self):
 
