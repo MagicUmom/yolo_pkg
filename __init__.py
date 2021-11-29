@@ -104,11 +104,23 @@ class YOLO():
         print(cmd)
         return cmd
             
-    def mkcfg(self):
+    def mkcfg(self, FORMAT = 'VOC'):
+        """
+        format : 'YOLO' or 'VOC' , default is 'VOC'
+            turn VOC format into YOLO format
+        """
+        
         self.matching()
-        self.Convert_VOC2YOLO_format()
-        self.parse_obj_files()
-        self.create_train_and_test_files()
+
+        if FORMAT == 'VOC':
+            self.Convert_VOC2YOLO_format()
+            self.parse_obj_files()
+            self.create_train_and_test_files()
+
+        elif FORMAT == 'YOLO':
+
+        else:
+            raise ValueError('Unknown FORMAT type, FORMAT must be \'YOLO\' or \'VOC\'')
         
         files = glob.iglob(os.path.join(self.tmp_imgs, "*.jpg"))
         for file in files:
