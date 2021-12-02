@@ -108,6 +108,7 @@ class YOLO():
         """
         format : 'YOLO' or 'VOC' , default is 'VOC'
             turn VOC format into YOLO format
+            預設YOLO的 class 的檔名為 classes.txt
         """
         
         self.matching()
@@ -115,13 +116,13 @@ class YOLO():
         if FORMAT == 'VOC':
             self.Convert_VOC2YOLO_format()
             self.parse_obj_files()
-            self.create_train_and_test_files()
 
         elif FORMAT == 'YOLO':
-
+            self.Convert_YOLO_format()
         else:
             raise ValueError('Unknown FORMAT type, FORMAT must be \'YOLO\' or \'VOC\'')
         
+        self.create_train_and_test_files()
         files = glob.iglob(os.path.join(self.tmp_imgs, "*.jpg"))
         for file in files:
             if os.path.isfile(file):
@@ -225,6 +226,11 @@ class YOLO():
             f.write("\n".join(labels))
 
         print('Read in %d labels: %s' % (len(labels), ", ".join(labels)))
+
+    def Convert_YOLO_format(self):
+        if not os.isfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt') :
+            raise ValueError('cannot read classes.txt in ', os.path.join(self.LABELS_DIR_PATH)
+        copyfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt'), os.path.join(self.LOCAL_CFG_DIR_PATH, 'obj.names'))
 
     # 查詢 CFG 資料夾內，我們設定了多少的標記檔
     def parse_obj_files(self):
