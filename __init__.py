@@ -229,7 +229,7 @@ class YOLO():
 
     def Convert_YOLO_format(self):
         if not os.isfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt')) :
-            raise ValueError('cannot read classes.txt in ', os.path.join(self.LABELS_DIR_PATH)
+            raise ValueError('cannot read classes.txt in ', os.path.join(self.LABELS_DIR_PATH))
         copyfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt'), os.path.join(self.LOCAL_CFG_DIR_PATH, 'obj.names'))
 
     # 查詢 CFG 資料夾內，我們設定了多少的標記檔
