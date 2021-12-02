@@ -228,7 +228,7 @@ class YOLO():
         print('Read in %d labels: %s' % (len(labels), ", ".join(labels)))
 
     def Convert_YOLO_format(self):
-        if not os.isfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt') :
+        if not os.isfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt')) :
             raise ValueError('cannot read classes.txt in ', os.path.join(self.LABELS_DIR_PATH)
         copyfile(os.path.join(self.LABELS_DIR_PATH ,'classes.txt'), os.path.join(self.LOCAL_CFG_DIR_PATH, 'obj.names'))
 
